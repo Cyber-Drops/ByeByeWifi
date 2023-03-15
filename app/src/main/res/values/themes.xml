@@ -13,4 +13,11 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="headerText">
+        <item name="android:textSize">@dimen/headerTextSize</item>
+        <item name="android:textColor">@color/headerTextColor</item>
+        <item name="android:rotation">@dimen/headerTextRotation</item>
+
+
+    </style>
 </resources>
