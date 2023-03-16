@@ -2,4 +2,7 @@
 <resources>
     <dimen name="headerTextSize">70sp</dimen>
     <dimen name="headerTextRotation">15</dimen>
+    <dimen name="headerTextElevation">10sp</dimen>
+    <dimen name="commandBtnSize">40sp</dimen>
+    <dimen name="commandBtnMarginBottom">10sp</dimen>
 </resources>

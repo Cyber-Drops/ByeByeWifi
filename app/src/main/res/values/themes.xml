@@ -17,7 +17,11 @@
         <item name="android:textSize">@dimen/headerTextSize</item>
         <item name="android:textColor">@color/headerTextColor</item>
         <item name="android:rotation">@dimen/headerTextRotation</item>
-
-
+    </style>
+    <style name="mainTextBTN">
+        <item name="android:textSize">@dimen/commandBtnSize</item>
+        <item name="android:textColor">@color/commandBtnColor</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center</item>
     </style>
 </resources>

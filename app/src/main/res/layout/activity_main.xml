@@ -8,13 +8,62 @@
     android:gravity="center"
     android:background="@color/mainBackgroundColor"
     tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@mipmap/evil_wifi_logo_title"
+        android:paddingBottom="10sp"
+         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:theme="@style/headerText"
-
-
+        android:layout_marginBottom="@dimen/commandBtnMarginBottom"
+        android:background="@drawable/main_btn"
+        android:text="@string/main_btn_wifi_localizer"
+        android:theme="@style/mainTextBTN"
         >
     </TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/commandBtnMarginBottom"
+        android:background="@drawable/main_btn"
+        android:text="@string/main_btn_wifi_localizer"
+        android:theme="@style/mainTextBTN">
+    </TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/commandBtnMarginBottom"
+        android:background="@drawable/main_btn"
+        android:text="@string/main_btn_wifi_localizer"
+        android:theme="@style/mainTextBTN">
+    </TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/commandBtnMarginBottom"
+        android:background="@drawable/main_btn"
+        android:text="@string/main_btn_wifi_localizer"
+        android:theme="@style/mainTextBTN">
+    </TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/commandBtnMarginBottom"
+        android:background="@drawable/main_btn"
+        android:text="@string/main_btn_wifi_localizer"
+        android:theme="@style/mainTextBTN">
+    </TextView>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@mipmap/logo_cyber_drops"
+        android:paddingBottom="10sp"
+        />
+
+
 </LinearLayout>

@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="headerTextColor">#F8F8F8</color>
     <color name="mainBackgroundColor">#BE3D3D</color>
+    <color name="commandBtnColor">#FFFFFF</color>
 </resources>
