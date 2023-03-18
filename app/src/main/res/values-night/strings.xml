@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="main_btn_wifi_localizer">WIFI LOCALIZER</string>
+    <string name="main_btn_distance_ap">DISTANCE AP</string>
+    <string name="main_btn_dictionary_attack">DICTIONARY ATTACK</string>
+    <string name="main_btn_wifi_analyzer">WIFI ANALYZER</string>
+    <string name="main_btn_data_from_db">DATA FROM DB</string>
 </resources>

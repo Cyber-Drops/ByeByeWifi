@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="headerTextSize">120sp</dimen>
-    <dimen name="headerTextRotation">15</dimen>
-    <dimen name="headerTextElevation">10sp</dimen>
-    <dimen name="commandBtnSize">70sp</dimen>
-    <dimen name="commandBtnMarginBottom">25sp</dimen>
-</resources>

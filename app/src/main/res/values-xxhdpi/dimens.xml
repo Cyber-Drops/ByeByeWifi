@@ -5,4 +5,6 @@
     <dimen name="headerTextElevation">10sp</dimen>
     <dimen name="commandBtnSize">40sp</dimen>
     <dimen name="commandBtnMarginBottom">10sp</dimen>
+    <dimen name="wifiLocilizeTextBTN_startPadding">8sp</dimen>
+    <dimen name="linearLayoutHorizontalWeigth">1</dimen>
 </resources>
