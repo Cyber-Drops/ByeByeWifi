@@ -15,11 +15,35 @@ public class ApRecycleHolder extends RecyclerView.ViewHolder {
     private TextView pwrSignalTextView;
     private View view;
 
-    public ApRecycleHolder(@NonNull View itemView) {
+     public ApRecycleHolder(@NonNull View itemView) {
         super(itemView);
         ssidTextView = (TextView) itemView.findViewById(R.id.ssidTextViewID);
         bssidTextView = (TextView) itemView.findViewById(R.id.bsidTextViewID);
         pwrSignalTextView = (TextView) itemView.findViewById(R.id.pwrSignalTextViewID);
         view = itemView;
+    }
+
+    public TextView getSsidTextView() {
+        return ssidTextView;
+    }
+
+    public void setSsidTextView(TextView ssidTextView) {
+        this.ssidTextView = ssidTextView;
+    }
+
+    public TextView getBssidTextView() {
+        return bssidTextView;
+    }
+
+    public void setBssidTextView(TextView bssidTextView) {
+        this.bssidTextView = bssidTextView;
+    }
+
+    public TextView getPwrSignalTextView() {
+        return pwrSignalTextView;
+    }
+
+    public void setPwrSignalTextView(TextView pwrSignalTextView) {
+        this.pwrSignalTextView = pwrSignalTextView;
     }
 }

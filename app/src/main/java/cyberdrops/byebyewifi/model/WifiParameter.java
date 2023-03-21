@@ -1,5 +1,7 @@
 package cyberdrops.byebyewifi.model;
 
+import androidx.annotation.NonNull;
+
 public class WifiParameter {
     private String ssid;
     private String bssid;
@@ -27,5 +29,15 @@ public class WifiParameter {
 
     public void setPwrSignal(String pwrSignal) {
         this.pwrSignal = pwrSignal;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        String wifiParameterFormat = """
+                ssid:%s
+                bssid:%s
+                pwrSignal:%s""";
+        return String.format(wifiParameterFormat,ssid,bssid,pwrSignal);
     }
 }

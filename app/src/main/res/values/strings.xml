@@ -5,7 +5,8 @@
     <string name="main_btn_dictionary_attack">DICTIONARY ATTACK</string>
     <string name="main_btn_wifi_analyzer">WIFI ANALYZER</string>
     <string name="main_btn_data_from_db">DATA FROM DB</string>
-    <string name="wifi_localizer_btn_start_stop">  START</string>
+    <string name="wifi_localizer_btn_start">  START</string>
+    <string name="wifi_localizer_btn_stop">  STOP</string>
     <string name="ssidLBL">SSID</string>
     <string name="bssidLBL">BSSID</string>
     <string name="pwrSignalLBL">SIGNAL PWR</string>

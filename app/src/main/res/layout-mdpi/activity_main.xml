@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/mainBackgroundColor"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="XXHDPI">
+    </TextView>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@mipmap/evil_wifi_logo_title"
+        android:paddingBottom="10sp"
+         />
+
+    <TextView
+        android:id="@+id/wiFiTextBTNID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/commandBtnMarginBottom"
+        android:background="@drawable/main_btn"
+        android:onClick="onClick"
+        android:text="@string/main_btn_wifi_localizer"
+        android:theme="@style/mainTextBTN" />
+    <TextView
+        android:id="@+id/distanceAPTextBTNID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/commandBtnMarginBottom"
+        android:background="@drawable/main_btn"
+        android:onClick="onClick"
+        android:text="@string/main_btn_distance_ap"
+        android:theme="@style/mainTextBTN">
+    </TextView>
+
+    <TextView
+        android:id="@+id/dictionaryAttackTextBTNID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/commandBtnMarginBottom"
+        android:background="@drawable/main_btn"
+        android:onClick="onClick"
+        android:text="@string/main_btn_dictionary_attack"
+        android:theme="@style/mainTextBTN">
+    </TextView>
+
+    <TextView
+        android:id="@+id/wifiAnalyzerTextBTNID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/commandBtnMarginBottom"
+        android:background="@drawable/main_btn"
+        android:minHeight="48dp"
+        android:onClick="onClick"
+        android:text="@string/main_btn_wifi_analyzer"
+        android:theme="@style/mainTextBTN" />
+
+    <TextView
+        android:id="@+id/dataFromDBTextBTNID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/commandBtnMarginBottom"
+        android:background="@drawable/main_btn"
+        android:onClick="onClick"
+        android:text="@string/main_btn_data_from_db"
+        android:theme="@style/mainTextBTN">
+    </TextView>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@mipmap/logo_cyber_drops"
+        android:paddingBottom="10sp"
+        />
+
+
+</LinearLayout>

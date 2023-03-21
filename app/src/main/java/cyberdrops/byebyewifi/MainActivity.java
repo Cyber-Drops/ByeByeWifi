@@ -40,6 +40,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.NEARBY_WIFI_DEVICES) != PackageManager.PERMISSION_GRANTED){
             permissions.add(Manifest.permission.NEARBY_WIFI_DEVICES);
         }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.INTERNET);
+        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK) != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.WAKE_LOCK);
+        }
         if (!permissions.isEmpty()){
             String[] permissionsArr = new String[permissions.size()];
             permissionsArr = permissions.toArray(permissionsArr);
