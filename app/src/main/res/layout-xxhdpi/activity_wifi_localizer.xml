@@ -68,7 +68,7 @@
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.4"
+            android:layout_weight="0.3"
             android:text="@string/bssidLBL"
             android:textColor="@color/headerTextColor" />
 
@@ -78,6 +78,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
             android:text="@string/pwrSignalLBL"
+            android:textColor="@color/headerTextColor" />
+        <TextView
+            android:id="@+id/frequency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:text="@string/frequencyLBL"
             android:textColor="@color/headerTextColor" />
 
     </LinearLayout>

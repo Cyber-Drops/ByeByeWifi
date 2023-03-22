@@ -34,10 +34,12 @@ import cyberdrops.byebyewifi.adapter.ApRecycleAdapter;
 import cyberdrops.byebyewifi.broadcastreceiver.WifiScanReceiver;
 import cyberdrops.byebyewifi.model.WifiParameter;
 import cyberdrops.byebyewifi.recyclehorder.ApRecycleHolder;
+import cyberdrops.byebyewifi.services.GpsTracker;
 
 public class WifiLocalizer extends AppCompatActivity {
     private ApRecycleAdapter apRecycleAdapter;
     private RecyclerView wifiLocalizerRecyclerView;
+    GpsTracker gpsTracker = null;
     private WifiScanReceiver wifiScanReceiver;
     IntentFilter wifiIntentFilter;
     private WifiManager wifiManager;
@@ -93,6 +95,8 @@ public class WifiLocalizer extends AppCompatActivity {
 
     @SuppressLint("InvalidWakeLockTag")
     private void initWifiLocalizer(){
+        //TODO inizializzazione oggetto GpsTracker
+        this.gpsTracker = new GpsTracker(this);
         powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
         powerManagerLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "my Tag");
         wifiParameterHashMap = new HashMap<>();
@@ -156,12 +160,20 @@ public class WifiLocalizer extends AppCompatActivity {
     }
     @SuppressLint("MissingPermission")
     private List<WifiParameter> getWifiParameters(){
+        gpsTracker.setGpsLocation();
         scanResultList = wifiManager.getScanResults();
         for (ScanResult scanResult : scanResultList) {
             WifiParameter wifiParameter = new WifiParameter();
             wifiParameter.setSsid(scanResult.SSID);
             wifiParameter.setBssid(scanResult.BSSID);
             wifiParameter.setPwrSignal(String.valueOf(scanResult.level));
+            wifiParameter.setFrequency(String.valueOf(scanResult.frequency));
+            wifiParameter.setEncryption(scanResult.capabilities);
+            wifiParameter.setLatitude(" TODO ");
+            wifiParameter.setLongitude(" TODO ");
+            System.out.println(gpsTracker.isNetworkPEnabled());
+            System.out.println(gpsTracker.isGpsPEnabled());
+            System.out.println(gpsTracker.getLatitude());
             wifiParameterHashMap.put(scanResult.BSSID,wifiParameter);
         }
         wifiParameters.addAll(wifiParameterHashMap.values());

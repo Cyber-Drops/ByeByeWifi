@@ -11,4 +11,5 @@
     <string name="bssidLBL">BSSID</string>
     <string name="pwrSignalLBL">SIGNAL PWR</string>
     <string name="headerLocalizerLBL">LOCALIZE</string>
+    <string name="frequencyLBL">HZ</string>
 </resources>
