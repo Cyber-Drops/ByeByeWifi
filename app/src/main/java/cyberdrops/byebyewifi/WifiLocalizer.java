@@ -32,6 +32,7 @@ import java.util.concurrent.Executors;
 
 import cyberdrops.byebyewifi.adapter.ApRecycleAdapter;
 import cyberdrops.byebyewifi.broadcastreceiver.WifiScanReceiver;
+import cyberdrops.byebyewifi.model.WifiDbManager;
 import cyberdrops.byebyewifi.model.WifiParameter;
 import cyberdrops.byebyewifi.recyclehorder.ApRecycleHolder;
 import cyberdrops.byebyewifi.services.GpsTracker;
@@ -39,14 +40,15 @@ import cyberdrops.byebyewifi.services.GpsTracker;
 public class WifiLocalizer extends AppCompatActivity {
     private ApRecycleAdapter apRecycleAdapter;
     private RecyclerView wifiLocalizerRecyclerView;
-    GpsTracker gpsTracker = null;
+    private GpsTracker gpsTracker = null;
     private WifiScanReceiver wifiScanReceiver;
-    IntentFilter wifiIntentFilter;
+    private IntentFilter wifiIntentFilter;
     private WifiManager wifiManager;
     private WifiManager.WifiLock wifiLock;
     private PowerManager.WakeLock powerManagerLock;
     private List<ScanResult> scanResultList;
     private List<WifiParameter> wifiParameters;
+    private Boolean upgradeDb = false;
     private Boolean scanStart = false;
     private HashMap<String, WifiParameter> wifiParameterHashMap;
     private PowerManager powerManager;
@@ -145,7 +147,9 @@ public class WifiLocalizer extends AppCompatActivity {
                     getApplicationContext().registerReceiver(wifiScanReceiver, wifiIntentFilter);
                     wifiParameters = getWifiParameters();
                     System.out.println("---------------->AVVIO");
-                    RecyclerView wifiLocalizerRecyclerView = (RecyclerView) findViewById(R.id.wifi_localizer_recyclerview);
+                    saveWifiParametersToDb(wifiParameters);
+                    //RecyclerView wifiLocalizerRecyclerView = (RecyclerView) findViewById(R.id.wifi_localizer_recyclerview); Modifica del 22/03/23
+                    wifiLocalizerRecyclerView = (RecyclerView) findViewById(R.id.wifi_localizer_recyclerview);
                     apRecycleAdapter = new ApRecycleAdapter(wifiParameters, getApplicationContext());
                     wifiLocalizerRecyclerView.post(()->wifiLocalizerRecyclerView.setAdapter(apRecycleAdapter));
                     wifiLocalizerRecyclerView.post(()->wifiLocalizerRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext())));
@@ -169,15 +173,28 @@ public class WifiLocalizer extends AppCompatActivity {
             wifiParameter.setPwrSignal(String.valueOf(scanResult.level));
             wifiParameter.setFrequency(String.valueOf(scanResult.frequency));
             wifiParameter.setEncryption(scanResult.capabilities);
-            wifiParameter.setLatitude(" TODO ");
-            wifiParameter.setLongitude(" TODO ");
+            wifiParameter.setLatitude(String.valueOf(gpsTracker.getLatitude()));
+            wifiParameter.setLongitude(String.valueOf(gpsTracker.getLongitude()));
             System.out.println(gpsTracker.isNetworkPEnabled());
             System.out.println(gpsTracker.isGpsPEnabled());
-            System.out.println(gpsTracker.getLatitude());
             wifiParameterHashMap.put(scanResult.BSSID,wifiParameter);
         }
         wifiParameters.addAll(wifiParameterHashMap.values());
         return wifiParameters;
+    }
+
+    private void saveWifiParametersToDb(List<WifiParameter> wifiParameters){
+        //TODO return boolean per salvataggio andato a buon fine
+        if (upgradeDb){
+            for (WifiParameter wifiParameter : wifiParameters) {
+                WifiDbManager.getWifiDbManagerInstance(this).getDaoWifiParameters().updateWifiParameters(wifiParameter);
+            }
+        }else {
+            for (WifiParameter wifiParameter : wifiParameters) {
+                WifiDbManager.getWifiDbManagerInstance(this).getDaoWifiParameters().saveWifiParameters(wifiParameter);
+            }
+            upgradeDb = true;
+        }
     }
     private void resetUI(){
         System.out.println("------------------>CLEAR");
