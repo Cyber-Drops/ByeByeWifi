@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()){
             case R.id.wiFiTextBTNID:
                 Intent wifiLocalizerIntent = new Intent(this,WifiLocalizer.class);
-                System.out.println("FIRSTBTN");
                 startActivity(wifiLocalizerIntent);
                 break;
             case R.id.distanceAPTextBTNID:
@@ -72,7 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 System.out.println("FRTBTN");
                 break;
             case R.id.dataFromDBTextBTNID:
-                System.out.println("FVTBTN");
+                Intent dataFromDbIntent = new Intent(this,DataFromDb.class);
+                startActivity(dataFromDbIntent);
                 break;
             default:
                 System.out.println("DEFAULT: "+view.getId());
