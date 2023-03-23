@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="headerTextSize">70sp</dimen>
+    <dimen name="headerTextSize">50sp</dimen>
     <dimen name="headerTextRotation">15</dimen>
     <dimen name="headerTextElevation">10sp</dimen>
     <dimen name="commandBtnSize">40sp</dimen>
     <dimen name="commandBtnMarginBottom">10sp</dimen>
     <dimen name="wifiLocilizeTextBTN_startPadding">8sp</dimen>
     <dimen name="linearLayoutHorizontalWeigth">1</dimen>
+    <dimen name="wifiLocilizeHeaderTextParameterSize">22sp</dimen>
+    <dimen name="wifiLocalizeTextBtnSize">45sp</dimen>
+    <dimen name="apLayoutRecycleViewTextSize">15sp</dimen>
 </resources>

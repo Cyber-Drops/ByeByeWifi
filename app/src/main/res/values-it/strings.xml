@@ -9,6 +9,8 @@
     <string name="wifi_localizer_btn_stop">  STOP</string>
     <string name="ssidLBL">SSID</string>
     <string name="bssidLBL">BSSID</string>
-    <string name="pwrSignalLBL">SIGNAL PWR</string>
+    <string name="pwrSignalLBL">PWR</string>
     <string name="headerLocalizerLBL">LOCALIZE</string>
+    <string name="longitudeLBL">LONG</string>
+    <string name="latitudeLBL">LAT</string>
 </resources>

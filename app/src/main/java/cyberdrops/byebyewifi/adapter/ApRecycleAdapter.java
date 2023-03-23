@@ -38,9 +38,28 @@ public class ApRecycleAdapter extends RecyclerView.Adapter<ApRecycleHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ApRecycleHolder holder, int position) {
+        //TODO CREARE METODO GESTIONE TEXTSIZE
+        int endSubstringSsid = 0;
+        int endSubstringLat = 0;
+        int endSubstringLong = 0;
+        if ( wifiParameters.get(position).getLatitude().length() >= 5 && wifiParameters.get(position).getLongitude().length() >= 5){
+            endSubstringLat = 5;
+            endSubstringLong = 5;
+        }else {
+            endSubstringLat = wifiParameters.get(position).getLatitude().length();
+            endSubstringLong = wifiParameters.get(position).getLongitude().length();
+        }
+        if (wifiParameters.get(position).getSsid().length() >= 5){
+            endSubstringSsid = 5;
+        }else {
+            endSubstringSsid = wifiParameters.get(position).getSsid().length();
+        }
         holder.getPwrSignalTextView().setText(wifiParameters.get(position).getPwrSignal());
-        holder.getSsidTextView().setText(wifiParameters.get(position).getSsid());
+        holder.getSsidTextView().setText(wifiParameters.get(position).getSsid().substring(0,endSubstringSsid));
         holder.getBssidTextView().setText(wifiParameters.get(position).getBssid());
+        holder.getLatitudeTextView().setText(wifiParameters.get(position).getLatitude().substring(0,endSubstringLat));
+        holder.getFrequencyTextView().setText(wifiParameters.get(position).getFrequency());
+        holder.getLongitudeTextView().setText(wifiParameters.get(position).getLongitude().substring(0,endSubstringLong));
     }
 
     @Override

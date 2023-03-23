@@ -14,7 +14,7 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/evil_wifi_logo"
+        android:icon="@drawable/evil_wifi_logo_ic"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.ByeByeWifi"

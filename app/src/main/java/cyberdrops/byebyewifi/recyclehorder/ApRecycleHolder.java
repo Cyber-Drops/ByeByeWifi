@@ -13,6 +13,9 @@ public class ApRecycleHolder extends RecyclerView.ViewHolder {
     private TextView ssidTextView;
     private TextView bssidTextView;
     private TextView pwrSignalTextView;
+    private TextView frequencyTextView;
+    private TextView latitudeTextView;
+    private TextView longitudeTextView;
     private View view;
 
      public ApRecycleHolder(@NonNull View itemView) {
@@ -20,6 +23,9 @@ public class ApRecycleHolder extends RecyclerView.ViewHolder {
         ssidTextView = (TextView) itemView.findViewById(R.id.ssidTextViewID);
         bssidTextView = (TextView) itemView.findViewById(R.id.bsidTextViewID);
         pwrSignalTextView = (TextView) itemView.findViewById(R.id.pwrSignalTextViewID);
+        frequencyTextView = (TextView) itemView.findViewById(R.id.frequencyTextViewID);
+        latitudeTextView = (TextView) itemView.findViewById(R.id.latitudeTextViewID);
+        longitudeTextView = (TextView) itemView.findViewById(R.id.longitudeTextViewID);
         view = itemView;
     }
 
@@ -45,5 +51,29 @@ public class ApRecycleHolder extends RecyclerView.ViewHolder {
 
     public void setPwrSignalTextView(TextView pwrSignalTextView) {
         this.pwrSignalTextView = pwrSignalTextView;
+    }
+
+    public TextView getFrequencyTextView() {
+        return frequencyTextView;
+    }
+
+    public void setFrequencyTextView(TextView frequencyTextView) {
+        this.frequencyTextView = frequencyTextView;
+    }
+
+    public TextView getLatitudeTextView() {
+        return latitudeTextView;
+    }
+
+    public void setLatitudeTextView(TextView latitudeTextView) {
+        this.latitudeTextView = latitudeTextView;
+    }
+
+    public TextView getLongitudeTextView() {
+        return longitudeTextView;
+    }
+
+    public void setLongitudeTextView(TextView longitudeTextView) {
+        this.longitudeTextView = longitudeTextView;
     }
 }

@@ -179,8 +179,8 @@ public class WifiLocalizer extends AppCompatActivity {
             wifiParameter.setEncryption(scanResult.capabilities);
             wifiParameter.setLatitude(String.valueOf(gpsTracker.getLatitude()));
             wifiParameter.setLongitude(String.valueOf(gpsTracker.getLongitude()));
-            System.out.println(gpsTracker.isNetworkPEnabled());
-            System.out.println(gpsTracker.isGpsPEnabled());
+            System.out.println(gpsTracker.getLatitude());
+            System.out.println(gpsTracker.getLongitude());
             wifiParameterHashMap.put(scanResult.BSSID,wifiParameter);
         }
         wifiParameters.addAll(wifiParameterHashMap.values());

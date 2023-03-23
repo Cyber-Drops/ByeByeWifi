@@ -14,23 +14,38 @@
         <!-- Customize your theme here. -->
     </style>
     <style name="headerText">
+        <item name="fontFamily">@font/miltown</item>
         <item name="android:textSize">@dimen/headerTextSize</item>
         <item name="android:textColor">@color/headerTextColor</item>
         <item name="android:rotation">@dimen/headerTextRotation</item>
     </style>
     <style name="mainTextBTN">
+        <item name="fontFamily">@font/arcade_font</item>
         <item name="android:textSize">@dimen/commandBtnSize</item>
         <item name="android:textColor">@color/commandBtnColor</item>
         <item name="android:textAlignment">center</item>
         <item name="android:gravity">center</item>
     </style>
     <style name="headerTextWifiLocalize">
+        <item name="fontFamily">@font/miltown</item>
         <item name="android:textSize">@dimen/headerTextSize</item>
         <item name="android:textColor">@color/headerTextColor</item>
         <item name="android:gravity">center</item>
     </style>
     <style name="wifiLocilizeTextBTN" parent="mainTextBTN">
+        <item name="fontFamily">@font/arcade_font</item>
+        <item name="android:textSize">@dimen/wifiLocalizeTextBtnSize</item>
         <item name="android:textAlignment">textStart</item>
         <item name="textStartPadding">10sp</item>
+    </style>
+    <style name="wifiLocilizeHeaderTextParameter">
+        <item name="android:textColor">@color/headerTextColor</item>
+        <item name="fontFamily">@font/arcade_font</item>
+        <item name="android:textSize">@dimen/wifiLocilizeHeaderTextParameterSize</item>
+    </style>
+    <style name="apLayoutRecycleViewText">
+        <item name="fontFamily">@font/arcade_font</item>
+        <item name="android:textColor">@color/apLayoutRecycleViewTextColor</item>
+        <item name="android:textSize">@dimen/apLayoutRecycleViewTextSize</item>
     </style>
 </resources>

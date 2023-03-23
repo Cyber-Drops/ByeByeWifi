@@ -21,8 +21,8 @@ public class GpsTracker extends Service implements LocationListener {
     private boolean isNetworkPEnabled = false;
     private boolean isGpsPEnabled = false;
 
-    private static final long TIME_TO_UPDATE_LOCATION  = 30000;
-    private static final long DISTANCE_TO_UPDATE_LOCATION  = 4;
+    private static final long TIME_TO_UPDATE_LOCATION  = 15000;
+    private static final long DISTANCE_TO_UPDATE_LOCATION  = 3;
 
     private double latitude;
     private double longitude;

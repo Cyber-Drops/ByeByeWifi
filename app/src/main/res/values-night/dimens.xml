@@ -2,4 +2,7 @@
 <resources>
     <dimen name="commandBtnSize">40sp</dimen>
     <dimen name="wifiLocilizeTextBTN_startPadding">8sp</dimen>
+    <dimen name="wifiLocilizeHeaderTextParameterSize">22sp</dimen>
+    <dimen name="wifiLocalizeTextBtnSize">45sp</dimen>
+    <dimen name="apLayoutRecycleViewTextSize">15sp</dimen>
 </resources>
