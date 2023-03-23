@@ -38,6 +38,7 @@ import cyberdrops.byebyewifi.recyclehorder.ApRecycleHolder;
 import cyberdrops.byebyewifi.services.GpsTracker;
 
 public class WifiLocalizer extends AppCompatActivity {
+
     private ApRecycleAdapter apRecycleAdapter;
     private RecyclerView wifiLocalizerRecyclerView;
     private GpsTracker gpsTracker = null;
@@ -129,7 +130,10 @@ public class WifiLocalizer extends AppCompatActivity {
         }else {
             textViewBTN.setText(getResources().getString(R.string.wifi_localizer_btn_start));
             scanStart = false;
-            resetUI();
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(()->saveWifiParametersToDb(wifiParameters));
+            executorService.shutdown();
+            //resetUI();
             Toast.makeText(getApplicationContext(),"Scansione Arrestata", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -147,8 +151,8 @@ public class WifiLocalizer extends AppCompatActivity {
                     getApplicationContext().registerReceiver(wifiScanReceiver, wifiIntentFilter);
                     wifiParameters = getWifiParameters();
                     System.out.println("---------------->AVVIO");
-                    saveWifiParametersToDb(wifiParameters);
-                    //RecyclerView wifiLocalizerRecyclerView = (RecyclerView) findViewById(R.id.wifi_localizer_recyclerview); Modifica del 22/03/23
+                    //saveWifiParametersToDb(wifiParameters);
+                    //RecyclerView wifiLocalizerRecyclerView = (RecyclerView) findViewById(R.id.wifi_localizer_recyclerview); //Modifica del 22/03/23
                     wifiLocalizerRecyclerView = (RecyclerView) findViewById(R.id.wifi_localizer_recyclerview);
                     apRecycleAdapter = new ApRecycleAdapter(wifiParameters, getApplicationContext());
                     wifiLocalizerRecyclerView.post(()->wifiLocalizerRecyclerView.setAdapter(apRecycleAdapter));
@@ -186,10 +190,12 @@ public class WifiLocalizer extends AppCompatActivity {
     private void saveWifiParametersToDb(List<WifiParameter> wifiParameters){
         //TODO return boolean per salvataggio andato a buon fine
         if (upgradeDb){
+            Log.i("Database", "upgrade ap to db-> "+wifiParameters.size());
             for (WifiParameter wifiParameter : wifiParameters) {
                 WifiDbManager.getWifiDbManagerInstance(this).getDaoWifiParameters().updateWifiParameters(wifiParameter);
             }
         }else {
+            Log.i("Database", "save ap to db-> "+wifiParameters.size());
             for (WifiParameter wifiParameter : wifiParameters) {
                 WifiDbManager.getWifiDbManagerInstance(this).getDaoWifiParameters().saveWifiParameters(wifiParameter);
             }
