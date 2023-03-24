@@ -52,6 +52,7 @@ public class WifiLocalizer extends AppCompatActivity {
     private Boolean upgradeDb = false;
     private Boolean scanStart = false;
     private HashMap<String, WifiParameter> wifiParameterHashMap;
+    private HashMap<String, WifiParameter> totalWifiParameterHashMap;
     private PowerManager powerManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,9 +101,11 @@ public class WifiLocalizer extends AppCompatActivity {
     private void initWifiLocalizer(){
         //TODO inizializzazione oggetto GpsTracker
         this.gpsTracker = new GpsTracker(this);
+        gpsTracker.setBestProvider();
         powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        powerManagerLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "my Tag");
+        powerManagerLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "No sleep");
         wifiParameterHashMap = new HashMap<>();
+        totalWifiParameterHashMap = new HashMap<>();
         wifiParameters = new ArrayList<>();
         wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         wifiScanReceiver = new WifiScanReceiver();
@@ -131,9 +134,10 @@ public class WifiLocalizer extends AppCompatActivity {
             textViewBTN.setText(getResources().getString(R.string.wifi_localizer_btn_start));
             scanStart = false;
             ExecutorService executorService = Executors.newSingleThreadExecutor();
+            wifiParameters.addAll(totalWifiParameterHashMap.values());
             executorService.execute(()->saveWifiParametersToDb(wifiParameters));
             executorService.shutdown();
-            //resetUI();
+            resetUI();
             Toast.makeText(getApplicationContext(),"Scansione Arrestata", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -168,7 +172,6 @@ public class WifiLocalizer extends AppCompatActivity {
     }
     @SuppressLint("MissingPermission")
     private List<WifiParameter> getWifiParameters(){
-        gpsTracker.setGpsLocation();
         scanResultList = wifiManager.getScanResults();
         for (ScanResult scanResult : scanResultList) {
             WifiParameter wifiParameter = new WifiParameter();
@@ -182,6 +185,7 @@ public class WifiLocalizer extends AppCompatActivity {
             System.out.println(gpsTracker.getLatitude());
             System.out.println(gpsTracker.getLongitude());
             wifiParameterHashMap.put(scanResult.BSSID,wifiParameter);
+            totalWifiParameterHashMap.put(scanResult.BSSID,wifiParameter);
         }
         wifiParameters.addAll(wifiParameterHashMap.values());
         return wifiParameters;
@@ -207,6 +211,9 @@ public class WifiLocalizer extends AppCompatActivity {
         if (wifiParameters != null && wifiParameterHashMap != null && wifiParameters.size() > 0 && wifiParameterHashMap.size() > 0){
             wifiParameters.clear();
             wifiParameterHashMap.clear();
+            if (!scanStart){
+                totalWifiParameterHashMap.clear();
+            }
         }else {
             Log.w("RESET_UI","WIFI OBJECTS IS EMPTY OR NULL");
         }
