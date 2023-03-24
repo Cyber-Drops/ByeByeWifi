@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/mainBackgroundColor"
+    tools:context=".DataFromDb">
+
+    <TextView
+        android:id="@+id/exportToFileFromDBTextBTNID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/commandBtnMarginBottom"
+        android:background="@drawable/main_btn"
+        android:onClick="onClick"
+        android:text="@string/exportToFileFromDbBTNlbl"
+        android:theme="@style/mainTextBTN" />
+    <TextView
+        android:id="@+id/sendFileToEmailFromDBTextBTNID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/commandBtnMarginBottom"
+        android:background="@drawable/main_btn"
+        android:onClick="onClick"
+        android:text="@string/sendFileToEmailFromDbBTNlbl"
+        android:theme="@style/mainTextBTN" />
+    <TextView
+        android:id="@+id/sendFileToWhatsUpFromDBTextBTNID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/commandBtnMarginBottom"
+        android:background="@drawable/main_btn"
+        android:onClick="onClick"
+        android:text="@string/sendFileToWhatsUpFromDbBTNlbl"
+        android:theme="@style/mainTextBTN" />
+    <TextView
+        android:id="@+id/resetDBTextBTNID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/commandBtnMarginBottom"
+        android:background="@drawable/main_btn"
+        android:onClick="onClick"
+        android:text="@string/resetDbBTNlbl"
+        android:theme="@style/mainTextBTN" />
+    <TextView
+        android:id="@+id/daDefinire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/commandBtnMarginBottom"
+        android:background="@drawable/main_btn"
+        android:onClick="onClick"
+        android:theme="@style/mainTextBTN" />
+</LinearLayout>

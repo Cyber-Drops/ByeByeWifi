@@ -13,4 +13,9 @@
     <string name="headerLocalizerLBL">LOCALIZE</string>
     <string name="longitudeLBL">LONG</string>
     <string name="latitudeLBL">LAT</string>
+    <string name="exportToFileFromDbBTNlbl">EXPORT TO FILE</string>
+    <string name="sendFileToEmailFromDbBTNlbl">SEND TO EMAIL</string>
+    <string name="sendFileToWhatsUpFromDbBTNlbl">SEND WHAT\'S UP</string>
+    <string name="resetDbBTNlbl">RESET DB</string>
+    <string name="makeAchoose">MAKE A CHOOSE!</string>
 </resources>
