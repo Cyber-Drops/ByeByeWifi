@@ -29,6 +29,7 @@ public class WifiParameter {
     public int getIdWifiParameters() {
         return idWifiParameters;
     }
+
     public void setIdWifiParameters(int idWifiParameters) {
         this.idWifiParameters = idWifiParameters;
     }

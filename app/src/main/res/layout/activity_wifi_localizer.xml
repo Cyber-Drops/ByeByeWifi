@@ -38,8 +38,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="CheckBox"
-        app:layout_constraintStart_toStartOf="@+id/start_stopWifiLocalizerBTN"
+        android:text="@string/saveToDbCheackBoxWifiLocalizer"
+        android:theme="@style/wifiLocilizeHeaderTextParameter"
+        app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/start_stopWifiLocalizerBTN" />
 
     <LinearLayout
@@ -107,11 +108,26 @@
         android:id="@+id/textView9"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:layout_marginStart="8dp"
+        android:text="@string/gnssStatusWifiLocilizeTitle"
+        android:theme="@style/wifiLocilizeHeaderTextParameter"
         app:layout_constraintBottom_toBottomOf="@+id/checkBox2"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toEndOf="@+id/checkBox2"
         app:layout_constraintTop_toTopOf="@+id/checkBox2" />
+
+    <TextView
+        android:id="@+id/gnssStatusNumberLBL"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="DWN"
+        android:theme="@style/wifiLocilizeHeaderTextParameter"
+        app:layout_constraintBottom_toBottomOf="@+id/textView9"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textView9"
+        app:layout_constraintTop_toTopOf="@+id/textView9"
+        app:layout_constraintVertical_bias="0.482" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/wifi_localizer_recyclerview"

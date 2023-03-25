@@ -3,6 +3,7 @@ package cyberdrops.byebyewifi;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,12 +12,23 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.DocumentsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.FilterOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,6 +40,10 @@ public class DataFromDb extends AppCompatActivity implements View.OnClickListene
 
     private Context applicationContext = null;
     private List<WifiParameter> wifiParameters = null;
+    private boolean isAvailable = false;
+    private boolean isWritable = false;
+    private boolean isReadable = false;
+    private boolean esitoExportToFile = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,25 +53,10 @@ public class DataFromDb extends AppCompatActivity implements View.OnClickListene
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-
-    }
-
-    ActivityResultLauncher<String> getmGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
-        @Override
-        public void onActivityResult(Uri result) {
-            System.out.println("ENTRATO");
-            System.out.println(result.getPath());
-        }
-    });
-
-    @Override
     public void onClick(View view) {
          switch (view.getId()){
              case R.id.exportToFileFromDBTextBTNID -> {
-                 exportToFile();
+                 setWifiParametersFromDb();
                  break;
              }
              case R.id.sendFileToEmailFromDBTextBTNID -> {
@@ -73,43 +74,79 @@ public class DataFromDb extends AppCompatActivity implements View.OnClickListene
              default -> Toast.makeText(applicationContext, R.string.makeAchoose, Toast.LENGTH_SHORT).show();
          }
     }
-    private boolean exportToFile(){
-        setWifiParameters();
-        /*
-        if (wifiParameters != null && wifiParameters.size() > 0 ){
+    private boolean exportToFile(List<WifiParameter> wifiParameters){
 
+        cheackExternalStorageState();
+        if (isAvailable && isWritable){
+            //setWifiParametersFromDb();
+            if (wifiParameters != null && wifiParameters.size() > 0 ){
+                esitoExportToFile = writeFile(wifiParameters);
+            }
         }
-         */
-        String externaleStorageState = Environment.getExternalStorageState();
-        System.out.println(externaleStorageState);
-        if (externaleStorageState.equalsIgnoreCase(Environment.MEDIA_MOUNTED_READ_ONLY)){
-            //TODO READONLY
-        }else{
-            //TODO WRITE AND READ
-        }
-        //Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        //intent.addCategory(Intent.CATEGORY_OPENABLE);
-        //intent.setType("*/*");
-        //intent.putExtra(Intent.EXTRA_TITLE, "invoice.txt");
-        //intent.getCharSequenceExtra("path");
-        //startActivityForResult(intent,1);
-
-        getmGetContent.launch("*/*");
-        System.out.println(applicationContext.getExternalFilesDir("/storage"));
-        Toast.makeText(applicationContext, externaleStorageState + "\n" + applicationContext.getExternalFilesDir(null), Toast.LENGTH_SHORT).show();
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                String esitoString;
+                if (esitoExportToFile){
+                    esitoString = "SALVATO IN DOWNLOAD";
+                }else {
+                    esitoString = "ERRORE DI SALVATAGGIO";
+                }
+                Toast.makeText(applicationContext, esitoString, Toast.LENGTH_SHORT).show();
+            }
+        });
+        System.out.println(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
         return true;
     }
-    private void setWifiParameters(){
+    private void setWifiParametersFromDb(){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(new Runnable() {
             @Override
             public void run() {
                 wifiParameters = WifiDbManager.getWifiDbManagerInstance(applicationContext).getDaoWifiParameters().getAllParameters();
-                for (WifiParameter wifiParameter : wifiParameters) {
-                    System.out.println(wifiParameter);
-                }
+                exportToFile(wifiParameters);
             }
         });
+        executorService.shutdown();
+    }
+    private void cheackExternalStorageState(){
+        String externaleStorageState = Environment.getExternalStorageState();
+        if (externaleStorageState.equalsIgnoreCase(Environment.MEDIA_MOUNTED)){
+            System.out.println("UNO");
+            isAvailable = true;
+            isReadable = true;
+            isWritable = true;
+        }else if (externaleStorageState.equalsIgnoreCase(Environment.MEDIA_MOUNTED_READ_ONLY)){
+            System.out.println("DUE");
+            isAvailable = true;
+            isReadable = true;
+        }else {
+            System.out.println("TRE");
+
+            return;
+        }
+    }
+
+    private boolean writeFile(List<WifiParameter> wifiParameters){
+        File folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File file = new File(folder, "AccesPoint_Localized.txt");
+        System.out.println(folder.getAbsolutePath());
+        try {
+            FileWriter fileWriter = new FileWriter(file);
+            for (WifiParameter wifiParameter:wifiParameters) {
+                fileWriter.write(wifiParameter.toString()+System.getProperty("line.separator"));
+                fileWriter.flush();
+            }
+            fileWriter.close();
+            Log.e("DATA FROM DB", "Scrittura avvenuta con successo");
+            esitoExportToFile = true;
+        } catch (FileNotFoundException e) {
+
+        } catch (IOException e) {
+            Log.e("DATA FROM DB", "IOException");
+            return esitoExportToFile;
+        }
+        return esitoExportToFile;
     }
     private boolean sendFileToEmail(){
         return true;

@@ -19,4 +19,6 @@
     <string name="sendFileToWhatsUpFromDbBTNlbl">SEND WHAT\'S UP</string>
     <string name="resetDbBTNlbl">RESET DB</string>
     <string name="makeAchoose">MAKE A CHOOSE!</string>
+    <string name="saveToDbCheackBoxWifiLocalizer">SAVE DATA TO DB</string>
+    <string name="gnssStatusWifiLocilizeTitle">Gnss:</string>
 </resources>

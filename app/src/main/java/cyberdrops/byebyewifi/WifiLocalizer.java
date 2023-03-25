@@ -41,6 +41,7 @@ public class WifiLocalizer extends AppCompatActivity {
 
     private ApRecycleAdapter apRecycleAdapter;
     private RecyclerView wifiLocalizerRecyclerView;
+    private TextView gnssStatusTextview;
     private GpsTracker gpsTracker = null;
     private WifiScanReceiver wifiScanReceiver;
     private IntentFilter wifiIntentFilter;
@@ -49,6 +50,7 @@ public class WifiLocalizer extends AppCompatActivity {
     private PowerManager.WakeLock powerManagerLock;
     private List<ScanResult> scanResultList;
     private List<WifiParameter> wifiParameters;
+    private List<WifiParameter> totalWifiParameters;
     private Boolean upgradeDb = false;
     private Boolean scanStart = false;
     private HashMap<String, WifiParameter> wifiParameterHashMap;
@@ -95,6 +97,7 @@ public class WifiLocalizer extends AppCompatActivity {
         if (powerManagerLock.isHeld()){
             powerManagerLock.release();
         }
+        gpsTracker.stopSelf();
     }
 
     @SuppressLint("InvalidWakeLockTag")
@@ -107,14 +110,15 @@ public class WifiLocalizer extends AppCompatActivity {
         wifiParameterHashMap = new HashMap<>();
         totalWifiParameterHashMap = new HashMap<>();
         wifiParameters = new ArrayList<>();
+        totalWifiParameters = new ArrayList<>();
         wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         wifiScanReceiver = new WifiScanReceiver();
         wifiIntentFilter = new IntentFilter();
         wifiIntentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-        wifiManager.setWifiEnabled(true);
+        //wifiManager.setWifiEnabled(true);
         wifiLock =  wifiManager.createWifiLock(WifiManager.ACTION_REQUEST_SCAN_ALWAYS_AVAILABLE);
         if (!powerManagerLock.isHeld()){
-            powerManagerLock.acquire();
+            powerManagerLock.acquire(10*60*1000L /*10 minutes*/);
         }
         if (!wifiLock.isHeld()){
             wifiLock.acquire();
@@ -134,13 +138,12 @@ public class WifiLocalizer extends AppCompatActivity {
             textViewBTN.setText(getResources().getString(R.string.wifi_localizer_btn_start));
             scanStart = false;
             ExecutorService executorService = Executors.newSingleThreadExecutor();
-            wifiParameters.addAll(totalWifiParameterHashMap.values());
-            executorService.execute(()->saveWifiParametersToDb(wifiParameters));
+            totalWifiParameters.addAll(totalWifiParameterHashMap.values());
+            executorService.execute(()->saveWifiParametersToDb(totalWifiParameters));
             executorService.shutdown();
-            resetUI();
             Toast.makeText(getApplicationContext(),"Scansione Arrestata", Toast.LENGTH_SHORT).show();
-            return false;
-        }
+            }
+        return false;
     }
     private void startWifiScann(){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -151,7 +154,7 @@ public class WifiLocalizer extends AppCompatActivity {
                     if (wifiParameters.size() > 0){
                         resetUI();
                     }
-                    wifiManager.startScan();
+                    //wifiManager.startScan();
                     getApplicationContext().registerReceiver(wifiScanReceiver, wifiIntentFilter);
                     wifiParameters = getWifiParameters();
                     System.out.println("---------------->AVVIO");
@@ -161,6 +164,10 @@ public class WifiLocalizer extends AppCompatActivity {
                     apRecycleAdapter = new ApRecycleAdapter(wifiParameters, getApplicationContext());
                     wifiLocalizerRecyclerView.post(()->wifiLocalizerRecyclerView.setAdapter(apRecycleAdapter));
                     wifiLocalizerRecyclerView.post(()->wifiLocalizerRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext())));
+                    if (gpsTracker.getSatellitesStatus().toString().contains("true")){
+                        gnssStatusTextview = (TextView)findViewById(R.id.gnssStatusNumberLBL);
+                        gnssStatusTextview.post(()->gnssStatusTextview.setText("UP"));
+                    }
                     SystemClock.sleep(30000);//PER APP IN PRIMO PIANO LIMITAZIONE IMPOSTA A 30 SECONDI A SCANSIONE
                     //PER APP IN BACKGROUND 30 MINUTI A SCANSIONE (LIMITE IMPOSTO DAGLI SVILUPPATORI)
                     //CON SCHERMO BLOCCATO PASSA A 30 MINUTI, COME RIATTIVO LO SCHERMO RIPASSA A 30 SECONDI
@@ -205,6 +212,7 @@ public class WifiLocalizer extends AppCompatActivity {
             }
             upgradeDb = true;
         }
+        resetUI();
     }
     private void resetUI(){
         System.out.println("------------------>CLEAR");
@@ -212,6 +220,7 @@ public class WifiLocalizer extends AppCompatActivity {
             wifiParameters.clear();
             wifiParameterHashMap.clear();
             if (!scanStart){
+                totalWifiParameters.clear();
                 totalWifiParameterHashMap.clear();
             }
         }else {
