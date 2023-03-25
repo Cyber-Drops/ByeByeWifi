@@ -68,7 +68,17 @@ public class DataFromDb extends AppCompatActivity implements View.OnClickListene
                  break;
              }
              case R.id.resetDBTextBTNID -> {
-                 resetDataDb();
+                 boolean deleteAllTab = resetDataDb();
+                 new Handler(Looper.getMainLooper()).post(new Runnable() {
+                     @Override
+                     public void run() {
+                         if(deleteAllTab){
+                             Toast.makeText(applicationContext, "ALL TABLE DELETED", Toast.LENGTH_SHORT).show();
+                         }else {
+                             Toast.makeText(applicationContext, "ERROR TO RESET DB", Toast.LENGTH_SHORT).show();
+                         }
+                     }
+                 });
                  break;
              }
              default -> Toast.makeText(applicationContext, R.string.makeAchoose, Toast.LENGTH_SHORT).show();
@@ -155,6 +165,14 @@ public class DataFromDb extends AppCompatActivity implements View.OnClickListene
         return true;
     }
     private boolean resetDataDb(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                WifiDbManager.getWifiDbManagerInstance(applicationContext).clearAllTables();
+            }
+        });
+        executorService.shutdown();
         return true;
     }
 }
