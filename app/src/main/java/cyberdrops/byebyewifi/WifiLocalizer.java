@@ -21,6 +21,7 @@ import android.sax.ElementListener;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,8 +42,6 @@ public class WifiLocalizer extends AppCompatActivity {
 
     private ApRecycleAdapter apRecycleAdapter;
     private RecyclerView wifiLocalizerRecyclerView;
-    private TextView gnssStatusTextview;
-    private GpsTracker gpsTracker = null;
     private WifiScanReceiver wifiScanReceiver;
     private IntentFilter wifiIntentFilter;
     private WifiManager wifiManager;
@@ -51,11 +50,13 @@ public class WifiLocalizer extends AppCompatActivity {
     private List<ScanResult> scanResultList;
     private List<WifiParameter> wifiParameters;
     private List<WifiParameter> totalWifiParameters;
-    private Boolean upgradeDb = false;
-    private Boolean scanStart = false;
     private HashMap<String, WifiParameter> wifiParameterHashMap;
     private HashMap<String, WifiParameter> totalWifiParameterHashMap;
     private PowerManager powerManager;
+    private TextView gnssStatusTextview;
+    private GpsTracker gpsTracker = null;
+    private Boolean upgradeDb = false;
+    private Boolean scanStart = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,13 +85,13 @@ public class WifiLocalizer extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //unregisterReceiver(wifiScanReceiver);
+        unregisterReceiver(wifiScanReceiver);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(wifiScanReceiver);
+        //unregisterReceiver(wifiScanReceiver);
         if (wifiLock.isHeld()){
             wifiLock.release();
         }
@@ -100,29 +101,10 @@ public class WifiLocalizer extends AppCompatActivity {
         gpsTracker.stopSelf();
     }
 
-    @SuppressLint("InvalidWakeLockTag")
     private void initWifiLocalizer(){
-        //TODO inizializzazione oggetto GpsTracker
-        this.gpsTracker = new GpsTracker(this);
-        gpsTracker.setBestProvider();
-        powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        powerManagerLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "No sleep");
-        wifiParameterHashMap = new HashMap<>();
-        totalWifiParameterHashMap = new HashMap<>();
-        wifiParameters = new ArrayList<>();
-        totalWifiParameters = new ArrayList<>();
-        wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-        wifiScanReceiver = new WifiScanReceiver();
-        wifiIntentFilter = new IntentFilter();
-        wifiIntentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-        //wifiManager.setWifiEnabled(true);
-        wifiLock =  wifiManager.createWifiLock(WifiManager.ACTION_REQUEST_SCAN_ALWAYS_AVAILABLE);
-        if (!powerManagerLock.isHeld()){
-            powerManagerLock.acquire(10*60*1000L /*10 minutes*/);
-        }
-        if (!wifiLock.isHeld()){
-            wifiLock.acquire();
-        }
+        initPowerManagment();
+        initWifi();
+        initTrackerFunctions();
     }
 
     private boolean isStarted(View view){
@@ -137,10 +119,13 @@ public class WifiLocalizer extends AppCompatActivity {
         }else {
             textViewBTN.setText(getResources().getString(R.string.wifi_localizer_btn_start));
             scanStart = false;
-            ExecutorService executorService = Executors.newSingleThreadExecutor();
-            totalWifiParameters.addAll(totalWifiParameterHashMap.values());
-            executorService.execute(()->saveWifiParametersToDb(totalWifiParameters));
-            executorService.shutdown();
+            CheckBox saveToDbCheckBox = (CheckBox) findViewById(R.id.checkBox2);
+            if (saveToDbCheckBox.isChecked()){
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                totalWifiParameters.addAll(totalWifiParameterHashMap.values());
+                executorService.execute(()->saveWifiParametersToDb(totalWifiParameters));
+                executorService.shutdown();
+            }
             Toast.makeText(getApplicationContext(),"Scansione Arrestata", Toast.LENGTH_SHORT).show();
             }
         return false;
@@ -154,12 +139,11 @@ public class WifiLocalizer extends AppCompatActivity {
                     if (wifiParameters.size() > 0){
                         resetUI();
                     }
-                    //wifiManager.startScan();
+                    wifiManager.startScan();
+                    Log.i("START_SCANN deprecated","ESEGUITA");
                     getApplicationContext().registerReceiver(wifiScanReceiver, wifiIntentFilter);
                     wifiParameters = getWifiParameters();
                     System.out.println("---------------->AVVIO");
-                    //saveWifiParametersToDb(wifiParameters);
-                    //RecyclerView wifiLocalizerRecyclerView = (RecyclerView) findViewById(R.id.wifi_localizer_recyclerview); //Modifica del 22/03/23
                     wifiLocalizerRecyclerView = (RecyclerView) findViewById(R.id.wifi_localizer_recyclerview);
                     apRecycleAdapter = new ApRecycleAdapter(wifiParameters, getApplicationContext());
                     wifiLocalizerRecyclerView.post(()->wifiLocalizerRecyclerView.setAdapter(apRecycleAdapter));
@@ -226,7 +210,36 @@ public class WifiLocalizer extends AppCompatActivity {
         }else {
             Log.w("RESET_UI","WIFI OBJECTS IS EMPTY OR NULL");
         }
+    }
+    private void initWifi(){
+        wifiParameterHashMap = new HashMap<>();
+        totalWifiParameterHashMap = new HashMap<>();
+        wifiParameters = new ArrayList<>();
+        totalWifiParameters = new ArrayList<>();
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+        wifiScanReceiver = new WifiScanReceiver();
+        wifiIntentFilter = new IntentFilter();
+        wifiIntentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        wifiLock =  wifiManager.createWifiLock(WifiManager.ACTION_REQUEST_SCAN_ALWAYS_AVAILABLE);
+        if(!wifiManager.isWifiEnabled()){
+            wifiManager.setWifiEnabled(true);
+        }
+        if (!wifiLock.isHeld()){
+            wifiLock.acquire();
+        }
+    }
 
+    @SuppressLint("InvalidWakeLockTag")
+    private void initPowerManagment(){
+        powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        powerManagerLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "No sleep");
+        if (!powerManagerLock.isHeld()){
+            powerManagerLock.acquire(10*60*1000L /*10 minutes*/);
+        }
+    }
+    private void initTrackerFunctions(){
+        this.gpsTracker = new GpsTracker(this);
+        gpsTracker.setBestProvider();
     }
 
 }

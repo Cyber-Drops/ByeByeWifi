@@ -85,10 +85,8 @@ public class DataFromDb extends AppCompatActivity implements View.OnClickListene
          }
     }
     private boolean exportToFile(List<WifiParameter> wifiParameters){
-
         cheackExternalStorageState();
         if (isAvailable && isWritable){
-            //setWifiParametersFromDb();
             if (wifiParameters != null && wifiParameters.size() > 0 ){
                 esitoExportToFile = writeFile(wifiParameters);
             }
@@ -140,7 +138,6 @@ public class DataFromDb extends AppCompatActivity implements View.OnClickListene
     private boolean writeFile(List<WifiParameter> wifiParameters){
         File folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(folder, "AccesPoint_Localized.txt");
-        System.out.println(folder.getAbsolutePath());
         try {
             FileWriter fileWriter = new FileWriter(file);
             for (WifiParameter wifiParameter:wifiParameters) {
@@ -151,7 +148,7 @@ public class DataFromDb extends AppCompatActivity implements View.OnClickListene
             Log.e("DATA FROM DB", "Scrittura avvenuta con successo");
             esitoExportToFile = true;
         } catch (FileNotFoundException e) {
-
+            return esitoExportToFile;
         } catch (IOException e) {
             Log.e("DATA FROM DB", "IOException");
             return esitoExportToFile;

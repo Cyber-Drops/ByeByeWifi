@@ -71,7 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 System.out.println("SCNDBTN");
                 break;
             case R.id.dictionaryAttackTextBTNID:
-                System.out.println("TRDTBTN");
+                Intent dictionaryAttackIntent = new Intent(this, DictionaryAttack.class);
+                startActivity(dictionaryAttackIntent);
                 break;
             case R.id.wifiAnalyzerTextBTNID:
                 System.out.println("FRTBTN");
