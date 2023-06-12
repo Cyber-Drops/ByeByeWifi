@@ -15,6 +15,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+/**
+ * Classe che estende Service ed implementa LacationListner, per la gesione dei servizi legati alla
+ * geolocalizzazione.
+ */
 public class GpsTracker extends Service implements LocationListener  {
     //TODO in fase di release sostituire il parametro della distanza di misurazione minima di 0 con una costante positiva
     private Context context;
@@ -32,12 +36,26 @@ public class GpsTracker extends Service implements LocationListener  {
     private double latitude;
     private double longitude;
 
+    /**
+     * Costruttore del GpsTracker, si oppuca della fase di inizializzaizone del GpsTracker, tramite
+     * il metodo initGpsTracker().
+     * @param context tipo Context, il contesto del chiamante
+     */
     public GpsTracker(Context context) {
         this.context = context;
         this.initGpsTracker();
     }
 
-    @SuppressLint("MissingPermission")
+    /**
+     * Inizializza l'attributo locationManager richiamando il servizio di sistema
+     * LOCATION_SERVICE, tramite il quale accediamo ai servizi di geolocalizzaizone.
+     * Inizializza l'attributo bestProvider, richiedendo il miglior provider disponibile, tramite l'uso
+     * dei criteri con l'oggetto Criteria (Deprecato api34). Imposta GnssStausListner trmite il metodo.
+     * Registra una chiamata di status Gnss tramite il LacationManager, sempre tramite questo imposta
+     * il provider sia Network che Gps.
+     *
+     */
+        @SuppressLint("MissingPermission")
     private void initGpsTracker(){
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
@@ -45,10 +63,10 @@ public class GpsTracker extends Service implements LocationListener  {
         criteria.setPowerRequirement(Criteria.POWER_HIGH);
         criteria.setAltitudeRequired(false);
         this.locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
-        this.bestProvider  = locationManager.getBestProvider(criteria, true);
-        Log.i("BEST PROVIDER: ", this.bestProvider);
+        //Log.i("BEST PROVIDER: ", this.bestProvider);
         setGnssStatusListner();
         this.locationManager.registerGnssStatusCallback(mGnssStatusCallback);
+        this.bestProvider  = locationManager.getBestProvider(criteria, true);
         this.isNetworkPEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         this.isGpsPEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         /*
@@ -62,7 +80,9 @@ public class GpsTracker extends Service implements LocationListener  {
 
     }
 
-
+    /**
+     * Setting dell'ultima posizione conosciuta(rilevata).
+     */
     @SuppressLint("MissingPermission")
     public void setGpsLocation(){
         if (locationManager != null){
@@ -73,6 +93,10 @@ public class GpsTracker extends Service implements LocationListener  {
             this.longitude = location.getLongitude();
         }
     }
+
+    /**
+     * setting del miglior provider e dei tempi di acquisizione del gps
+     */
     @SuppressLint("MissingPermission")
     public void setBestProvider(){
         this.locationManager.requestLocationUpdates(bestProvider,0,0,this);
@@ -92,12 +116,24 @@ public class GpsTracker extends Service implements LocationListener  {
         //TODO procedura di attivazione Gps, se non attivi esci
     }
 
+    /**
+     *metodo di callback che consente l'associazione con il servizio.
+     * @param intent tipo Intent
+     * @return tipo IBinder definisce un interfaccia con la quale i client possono interagire con il
+     * servizio.
+     */
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    /**
+     * Metodo di callback, della classe anonima LocationListner, chiamato quando il device riceve
+     * una Location Aggiornata.
+     * setta gli attributi latitude e longitude
+     * @param location tipo Location.
+     */
     @Override
     public void onLocationChanged(@NonNull Location location) {
         System.out.println("------------------->>>>CALLBACK LISTNER<<<------------------------------");
@@ -122,6 +158,14 @@ public class GpsTracker extends Service implements LocationListener  {
         return isGpsPEnabled;
     }
 
+    /**
+     * Setta un GnssStatusListner, creando un oggetto GnssStatus.Callback e chiamando i metodi che
+     * implementa. onStarted() chaimato quando il sistema Gnss è stato attivato. onStopped() chiamato
+     * quando il sistema GNSS si è fermato. onFirstFix(int ttffMillis) Chiamato quando il sistema
+     * GNSS ha ricevuto il primo fix dall'avvio. onSatelliteStatusChanged(GnssStatus status)
+     * Chiamato periodicamente per segnalare lo stato del satellite GNSS. Inizializza l'attributo
+     * satellitesStatus, aggiungendo tutti i satelliti disponibili e discriminando quelli in uso.
+     */
     private void setGnssStatusListner() {
         mGnssStatusCallback = new GnssStatus.Callback() {
             @Override
@@ -154,6 +198,14 @@ public class GpsTracker extends Service implements LocationListener  {
             }
         };
     }
+    public void unsetGnssStatusListner(){
+        this.locationManager.unregisterGnssStatusCallback(mGnssStatusCallback);
+    }
+
+    /**
+     * Metodo di getter
+     * @return tipo StringBuilder, lo stato dei satelliti e quelli agganciati
+     */
     public StringBuilder getSatellitesStatus() {
         return satellitesStatus;
     }

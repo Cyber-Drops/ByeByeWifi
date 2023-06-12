@@ -5,6 +5,12 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+/**
+ * Classe che modella i record per la tabella wifi_parameters
+ * Gli attributi rappresentano le colonne della tabella, saranno popolati con i valori associati
+ * ai singoli oggetti. Sono stati definiti tutti metodi di set e get per il loro accesso ed è stato
+ * eseguito l'override del metodo toString() per la stampa dell'oggetto.
+ */
 @Entity(tableName = "wifi_parameters")
 public class WifiParameter {
 

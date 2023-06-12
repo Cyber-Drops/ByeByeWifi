@@ -36,6 +36,9 @@ import java.util.concurrent.Executors;
 import cyberdrops.byebyewifi.model.WifiDbManager;
 import cyberdrops.byebyewifi.model.WifiParameter;
 
+/**
+ * Classe che implementa la logia dell'activity_data_from_db, implementa View.OnClickListner.
+ */
 public class DataFromDb extends AppCompatActivity implements View.OnClickListener {
 
     private Context applicationContext = null;
@@ -84,6 +87,15 @@ public class DataFromDb extends AppCompatActivity implements View.OnClickListene
              default -> Toast.makeText(applicationContext, R.string.makeAchoose, Toast.LENGTH_SHORT).show();
          }
     }
+
+    /**
+     * Verifica lo storage esterno del device tramite il metodo cheackExternalStorageState(), se è
+     * scrivibile e la lista WifiParameters contiene qualcosa scrive i parametri in un file di testo,
+     * tramite il metodo writeFile(). Tramite un Handler ed un Looper crea e visualizza un Toast per
+     * l'esito.
+     * @param wifiParameters Lista di oggetti del tipo WifiParameters
+     * @return boolean
+     */
     private boolean exportToFile(List<WifiParameter> wifiParameters){
         cheackExternalStorageState();
         if (isAvailable && isWritable){
@@ -106,6 +118,11 @@ public class DataFromDb extends AppCompatActivity implements View.OnClickListene
         System.out.println(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
         return true;
     }
+
+    /**
+     * Legge tutti i parametri wifi dal db e passa una lista di oggetti WifiParameters al metodo
+     * per l'esportazione su file di testo exportToFile().
+     */
     private void setWifiParametersFromDb(){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(new Runnable() {
@@ -117,6 +134,12 @@ public class DataFromDb extends AppCompatActivity implements View.OnClickListene
         });
         executorService.shutdown();
     }
+
+    /**
+     * Metodo per il controllo dello storage esterno al device, verifica lo stato dello storage e
+     * setta gli attributi isAvailable, isReadable, isWritable (di default 3 false), Mounted (3 true),
+     * Mounted_Read_Only(2 true).
+     */
     private void cheackExternalStorageState(){
         String externaleStorageState = Environment.getExternalStorageState();
         if (externaleStorageState.equalsIgnoreCase(Environment.MEDIA_MOUNTED)){
@@ -135,6 +158,12 @@ public class DataFromDb extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+    /**
+     * Recupera la directory Download dello storage esterno, crea quì un nuovo file txt, scrive il
+     * file tramite un FileWriter()
+     * @param wifiParameters
+     * @return boolean attributo false di default, true succes or false failed.
+     */
     private boolean writeFile(List<WifiParameter> wifiParameters){
         File folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(folder, "AccesPoint_Localized.txt");
@@ -161,6 +190,12 @@ public class DataFromDb extends AppCompatActivity implements View.OnClickListene
     private boolean sendFileToWhatsUp(){
         return true;
     }
+
+    /**
+     * Metodo per il reset dei dati sul db, crea un Thread e ripulisce il db usando il metodo
+     * clearAllTables(), di deafult nella libreria RoomDataBase.
+     * @return boolean true per esito positivo
+     */
     private boolean resetDataDb(){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(new Runnable() {

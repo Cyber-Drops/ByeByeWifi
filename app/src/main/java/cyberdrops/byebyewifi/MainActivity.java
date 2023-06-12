@@ -12,8 +12,26 @@ import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class MainActivity, logica della schermata principale,
+ * collegata al layout grafico activity_main.xml
+ * Implementa l'interfaccia View.OnClickListner, e fa l'override del suo metodo onClick
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    /**
+     * Override del metodo onCreate, creo l'app, inizio allocazione risorse,
+     * invoca il metodo setContentView(), passando come parametro il layout da visualizzare.
+     * Nasconde la action bar invocando il metodo getSupportActionBar().hide().
+     * @param savedInstanceState Il savedInstanceState è un riferimento a un oggetto Bundle che
+     *                           viene passato nel metodo onCreate di ogni attività Android.
+     *                           Le attività hanno la possibilità, in circostanze speciali, di
+     *                           ripristinarsi a uno stato precedente utilizzando i dati archiviati
+     *                           in questo pacchetto.  Se non sono disponibili dati dell'istanza,
+     *                           saveInstanceState sarà null.  Ad esempio, il savedInstanceState sarà
+     *                           sempre nullo la prima volta che un'attività viene avviata, ma
+     *                           potrebbe non essere nullo se un'attività viene distrutta durante la rotazione.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +39,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().hide();
     }
 
+    /**
+     * Override metodo onStart, caricamento dell'interfaccia grafica, visibile ma non utilizzabile.
+     * Crea una lista di permessi per l'utilizzo corretto dell'applicazione e li richiede all'utente,
+     * se non sono già stati richiesti.
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -60,6 +83,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    /**
+     * Override del metodo onClick dell'interfaccia View.OnClickListner.
+     * gestisce l'evento del click, recuperando l'id dell'elemento grafico premuto, tramite il quale
+     * crea diversi oggetti di tipo Intent passando il contesto attuale e la classe da richiamare,
+     * così da passare ad una nuova activity tramite il metodo startActivity che accetta come
+     * parametro un Intent, che avrà un'altra grafica ed un altra logica.
+     * @param view oggetto di tipo View, che rende accessibili le risorse grafiche per
+     *             l'interazione.
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()){

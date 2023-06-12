@@ -8,6 +8,9 @@ import androidx.room.Update;
 
 import java.util.List;
 
+/**
+ * Interfaccia Dao che implementa i metodi per la tabella wifi_parameter
+ */
 @Dao
 public interface DaoWifiParameters {
 

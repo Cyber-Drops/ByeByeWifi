@@ -32,6 +32,7 @@
         android:onClick="onClick"
         android:text="@string/main_btn_wifi_localizer"
         android:theme="@style/mainTextBTN" />
+
     <TextView
         android:id="@+id/distanceAPTextBTNID"
         android:layout_width="wrap_content"
@@ -40,8 +41,7 @@
         android:background="@drawable/main_btn"
         android:onClick="onClick"
         android:text="@string/main_btn_distance_ap"
-        android:theme="@style/mainTextBTN">
-    </TextView>
+        android:theme="@style/mainTextBTN"></TextView>
 
     <TextView
         android:id="@+id/dictionaryAttackTextBTNID"

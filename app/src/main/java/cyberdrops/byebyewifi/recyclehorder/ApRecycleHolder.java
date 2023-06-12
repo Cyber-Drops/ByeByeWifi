@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import cyberdrops.byebyewifi.R;
 
+/**
+ * Holder custom che estende un RecycleView.ViewHolder
+ */
 public class ApRecycleHolder extends RecyclerView.ViewHolder {
 
     private TextView ssidTextView;
@@ -18,6 +21,12 @@ public class ApRecycleHolder extends RecyclerView.ViewHolder {
     private TextView longitudeTextView;
     private View view;
 
+    /**
+     * Costruttore setta gli attributi di classe con tutti i riferimenti ai componenti grafici del
+     * layout che viene usato per definire la recycleview.
+     * @param itemView oggetto di tipo View, fa riferimento alla view della recycleView,quindi al
+     *                 layout grafico, così che si possa accedere ai suoi componenti
+     */
      public ApRecycleHolder(@NonNull View itemView) {
         super(itemView);
         ssidTextView = (TextView) itemView.findViewById(R.id.ssidTextViewID);
@@ -28,7 +37,7 @@ public class ApRecycleHolder extends RecyclerView.ViewHolder {
         longitudeTextView = (TextView) itemView.findViewById(R.id.longitudeTextViewID);
         view = itemView;
     }
-
+//Definisco per ogni attributo i metodi di setter e di getter
     public TextView getSsidTextView() {
         return ssidTextView;
     }
